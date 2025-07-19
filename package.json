@@ -7,7 +7,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "mcp:batch": "tsx src/examples/batchProcessor.ts",
+    "mcp:events": "tsx src/examples/eventMonitor.ts",
+    "fund:scholarship": "tsx src/utils/fundScholarship.ts",
+    "sync:deployment": "tsx src/utils/deploymentSync.ts",
+    "mcp:demo": "tsx src/examples/mcpDemo.ts"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
