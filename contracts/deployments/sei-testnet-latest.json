@@ -1,0 +1,17 @@
+{
+  "network": "sei-testnet",
+  "chainId": 1328,
+  "deploymentDate": "2025-07-19T11:00:31.710Z",
+  "deployer": "0xc29d5d17Ee9C10929DEA6a02a849B72737686BcE",
+  "contracts": {
+    "EnrollmentNFT": {
+      "address": "0xC2bBc3d62dB8173b061a2833c83F9a3c9914299A",
+      "name": "EnrollmentProof",
+      "symbol": "ENFT"
+    },
+    "ScholarshipFund": {
+      "address": "0x7C2d443D008a022736c0c4A8728f015Fbe7b8fF8",
+      "admin": "0xc29d5d17Ee9C10929DEA6a02a849B72737686BcE"
+    }
+  }
+}

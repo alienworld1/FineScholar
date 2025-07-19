@@ -1,0 +1,23 @@
+{
+  "name": "finescholar-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for FineScholar dApp - AI-driven scholarships on Sei blockchain",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:gas": "REPORT_GAS=true hardhat test",
+    "deploy:local": "hardhat run scripts/deploy-to-sei.ts --network localhost",
+    "deploy:sei": "hardhat run scripts/deploy-to-sei.ts --network sei-testnet",
+    "verify": "hardhat run scripts/verify-deployment.ts --network sei-testnet",
+    "verify-students": "hardhat run scripts/verify-students.ts --network sei-testnet",
+    "clean": "hardhat clean"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "hardhat": "^2.26.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "dotenv": "^17.2.0"
+  }
+}
