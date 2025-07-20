@@ -1,19 +1,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "./EnrollmentNFT.sol";
+
 contract ScholarshipFund {
     address public admin;
+    EnrollmentNFT public enrollmentNFT;
+    
     mapping(address => uint256) public meritScores;
     mapping(address => bool) public verifiedStudents;
     mapping(address => bool) public hasReceivedScholarship;
+    mapping(bytes32 => bool) public verifiedDocumentHashes; // For document-based verification
     uint256 public totalFunds;
     uint256 public totalDistributed;
     
     event FundsDeposited(address indexed donor, uint256 amount);
     event ScoreProof(address indexed student, uint256 score, bytes32 proofHash);
-    event StudentVerified(address indexed student);
+    event StudentVerified(address indexed student, string verificationType);
     event Payout(address indexed student, uint256 amount);
     event EnrollmentProof(address indexed student, bytes32 proofHash);
+    event DocumentHashVerified(bytes32 indexed documentHash, address indexed student);
 
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only admin can perform this action");
@@ -21,12 +27,13 @@ contract ScholarshipFund {
     }
 
     modifier onlyVerifiedStudent(address student) {
-        require(verifiedStudents[student], "Student not verified");
+        require(isStudentVerified(student), "Student not verified");
         _;
     }
 
-    constructor() {
+    constructor(address _enrollmentNFTAddress) {
         admin = msg.sender;
+        enrollmentNFT = EnrollmentNFT(_enrollmentNFTAddress);
     }
 
     /**
@@ -72,12 +79,52 @@ contract ScholarshipFund {
     }
 
     /**
-     * @dev Verifies a student's enrollment status
+     * @dev Verifies a student's enrollment status via NFT ownership
+     * @param student The student's address to verify
+     */
+    function verifyStudentByNFT(address student) external onlyAdmin {
+        require(enrollmentNFT.hasActiveEnrollment(student), "Student does not have active enrollment NFT");
+        verifiedStudents[student] = true;
+        emit StudentVerified(student, "NFT");
+    }
+
+    /**
+     * @dev Verifies a student's enrollment status via document hash
+     * @param student The student's address to verify
+     * @param documentHash Hash of the enrollment document
+     */
+    function verifyStudentByDocument(address student, bytes32 documentHash) external onlyAdmin {
+        verifiedDocumentHashes[documentHash] = true;
+        verifiedStudents[student] = true;
+        emit StudentVerified(student, "Document");
+        emit DocumentHashVerified(documentHash, student);
+    }
+
+    /**
+     * @dev Check if student is verified (either by NFT or document)
+     * @param student The student's address
+     */
+    function isStudentVerified(address student) public view returns (bool) {
+        // Check manual verification first
+        if (verifiedStudents[student]) {
+            return true;
+        }
+        
+        // Check NFT-based verification
+        if (address(enrollmentNFT) != address(0) && enrollmentNFT.hasActiveEnrollment(student)) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    /**
+     * @dev Verifies a student's enrollment status (legacy method)
      * @param student The student's address to verify
      */
     function verifyStudent(address student) external onlyAdmin {
         verifiedStudents[student] = true;
-        emit StudentVerified(student);
+        emit StudentVerified(student, "Manual");
     }
 
     /**
@@ -97,7 +144,7 @@ contract ScholarshipFund {
     function batchVerifyStudents(address[] calldata students) external onlyAdmin {
         for (uint256 i = 0; i < students.length; i++) {
             verifiedStudents[students[i]] = true;
-            emit StudentVerified(students[i]);
+            emit StudentVerified(students[i], "Batch");
         }
     }
 
@@ -143,10 +190,18 @@ contract ScholarshipFund {
     }
 
     /**
-     * @dev Check if student is verified
-     * @param student The student's address
+     * @dev Update EnrollmentNFT contract address (in case of upgrades)
+     * @param newEnrollmentNFT The new EnrollmentNFT contract address
      */
-    function isStudentVerified(address student) external view returns (bool) {
-        return verifiedStudents[student];
+    function updateEnrollmentNFT(address newEnrollmentNFT) external onlyAdmin {
+        enrollmentNFT = EnrollmentNFT(newEnrollmentNFT);
+    }
+
+    /**
+     * @dev Check if a document hash is verified
+     * @param documentHash The document hash to check
+     */
+    function isDocumentHashVerified(bytes32 documentHash) external view returns (bool) {
+        return verifiedDocumentHashes[documentHash];
     }
 }

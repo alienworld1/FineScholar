@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
 import { useScholarshipContract } from '../hooks/useScholarshipContract';
+import { useEnrollmentNFT } from '../hooks/useEnrollmentNFT';
 import { useMCPService, type StudentData } from '../hooks/useMCPService';
 import {
   BookOpen,
@@ -19,6 +20,7 @@ import {
   Eye,
 } from 'lucide-react';
 import FloatingElements from './FloatingElements';
+import EnrollmentVerification from './EnrollmentVerification';
 
 type ApplicationStatus = 'idle' | 'processing' | 'success' | 'error';
 
@@ -31,6 +33,7 @@ export default function StudentPortal() {
     submitStudentApplication,
     loading: contractLoading,
   } = useScholarshipContract();
+  const { hasActiveEnrollment, refetchActiveEnrollment } = useEnrollmentNFT();
   const { calculateMeritScore, processStudentApplication, isProcessing } =
     useMCPService();
 
@@ -200,7 +203,7 @@ export default function StudentPortal() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="bg-gradient-to-br from-green-100 to-emerald-100 rounded-2xl p-6 border-4 border-green-300 shadow-xl">
               <div className="flex items-center mb-4">
-                {isVerified ? (
+                {isVerified || hasActiveEnrollment ? (
                   <CheckCircle className="w-8 h-8 text-green-600 mr-3" />
                 ) : (
                   <AlertCircle className="w-8 h-8 text-orange-500 mr-3" />
@@ -210,9 +213,11 @@ export default function StudentPortal() {
                     Verification Status
                   </p>
                   <p
-                    className={`text-sm ${isVerified ? 'text-green-600' : 'text-orange-600'}`}
+                    className={`text-sm ${isVerified || hasActiveEnrollment ? 'text-green-600' : 'text-orange-600'}`}
                   >
-                    {isVerified ? 'Verified Student ✓' : 'Pending Verification'}
+                    {isVerified || hasActiveEnrollment
+                      ? 'Verified Student ✓'
+                      : 'Pending Verification'}
                   </p>
                 </div>
               </div>
@@ -248,6 +253,18 @@ export default function StudentPortal() {
               </div>
             </div>
           </div>
+
+          {/* Enrollment Verification Section */}
+          {!hasActiveEnrollment && !isVerified && (
+            <div className="mb-8">
+              <EnrollmentVerification
+                onVerificationComplete={() => {
+                  // Refetch enrollment status when verification is complete
+                  refetchActiveEnrollment();
+                }}
+              />
+            </div>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Application Form */}
