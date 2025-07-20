@@ -1,4 +1,5 @@
 import { Coffee, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
@@ -15,7 +16,7 @@ export default function Header() {
       </div>
 
       <nav className="relative z-10 container mx-auto px-6 py-6 flex justify-between items-center">
-        <div className="flex items-center space-x-4">
+        <Link to="/" className="flex items-center space-x-4">
           <div className="relative group">
             <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg shadow-lg border-4 border-orange-700 flex items-center justify-center transform group-hover:rotate-3 transition-all duration-300">
               <Coffee className="w-6 h-6 text-white drop-shadow-lg" />
@@ -35,20 +36,35 @@ export default function Header() {
               Artisan Scholarships
             </p>
           </div>
-        </div>
+        </Link>
 
-        <div className="hidden md:flex space-x-8">
-          {['How it works', 'Features', 'About'].map(item => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase().replace(' ', '-')}`}
-              className="relative group px-4 py-2 text-orange-800 hover:text-orange-900 font-bold transition-all duration-300 transform hover:-translate-y-1"
-            >
-              <span className="relative z-10">{item}</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-200 to-amber-200 rounded-lg border-3 border-orange-400 opacity-0 group-hover:opacity-100 transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"></div>
-              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-orange-300 rounded-full opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
-            </a>
-          ))}
+        <div className="hidden md:flex space-x-6">
+          <Link
+            to="/student"
+            className="relative group px-4 py-2 text-orange-800 hover:text-orange-900 font-bold transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <span className="relative z-10">Student Portal</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-200 to-amber-200 rounded-lg border-3 border-orange-400 opacity-0 group-hover:opacity-100 transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"></div>
+            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-orange-300 rounded-full opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+          </Link>
+
+          <Link
+            to="/donor"
+            className="relative group px-4 py-2 text-orange-800 hover:text-orange-900 font-bold transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <span className="relative z-10">Donor Portal</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-200 to-amber-200 rounded-lg border-3 border-orange-400 opacity-0 group-hover:opacity-100 transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"></div>
+            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-orange-300 rounded-full opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+          </Link>
+
+          <Link
+            to="/admin"
+            className="relative group px-4 py-2 text-purple-800 hover:text-purple-900 font-bold transition-all duration-300 transform hover:-translate-y-1"
+          >
+            <span className="relative z-10">Admin Dashboard</span>
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-200 to-violet-200 rounded-lg border-3 border-purple-400 opacity-0 group-hover:opacity-100 transform scale-0 group-hover:scale-100 transition-all duration-300 shadow-lg"></div>
+            <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-1 bg-purple-300 rounded-full opacity-0 group-hover:opacity-60 transition-opacity duration-300"></div>
+          </Link>
         </div>
       </nav>
     </header>

@@ -64,8 +64,7 @@ export default function WalletProvider({ children }: WalletProviderProps) {
         // Customize Privy's appearance and behavior
         appearance: {
           theme: 'light',
-          accentColor: '#f97316', // Orange color matching our design
-          logo: 'https://your-logo-url.com/logo.png',
+          accentColor: '#f97316', // Orange color
         },
         // Configure login methods
         loginMethods: ['wallet'],

@@ -3,6 +3,9 @@ import { ethers } from 'ethers';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import crypto from 'crypto';
 
+// Import the storeApplication function from admin routes
+import { storeApplication } from './admin.js';
+
 interface StudentData {
   studentId: string;
   address: string;
@@ -22,6 +25,7 @@ interface ProcessingResult {
   error?: string;
   transactionHash?: string;
   meritResult?: any;
+  applicationId?: string;
 }
 
 // Initialize AI and blockchain
@@ -145,7 +149,32 @@ export async function mcpProcessStudent(req: Request, res: Response) {
         blockchainError && !applicationSuccess ? blockchainError : undefined,
     };
 
-    // Return appropriate HTTP status based on success
+    // Store application for admin review if successful
+    if (applicationSuccess) {
+      try {
+        const applicationId = await storeApplication({
+          studentAddress: studentData.address,
+          studentId: studentData.studentId,
+          university: studentData.university,
+          major: studentData.major,
+          academicYear: studentData.academicYear,
+          gpa: studentData.gpa,
+          financialNeed: studentData.financialNeed,
+          volunteerHours: studentData.volunteerHours,
+          additionalInfo: studentData.additionalInfo,
+          meritScore: meritResult.score,
+          aiAnalysis: meritResult.reasoning,
+          transactionHash: transactionHash,
+          proofHash: meritResult.proofHash,
+        });
+
+        result.applicationId = applicationId;
+        console.log(`Application stored for admin review: ${applicationId}`);
+      } catch (error) {
+        console.error('Failed to store application:', error);
+        // Don't fail the request if storage fails
+      }
+    } // Return appropriate HTTP status based on success
     if (!applicationSuccess && blockchainError) {
       return res.status(400).json(result);
     }

@@ -1,0 +1,162 @@
+{
+  "pending": [],
+  "approved": [
+    [
+      "app_1753009591966_gl3r7cc0f",
+      {
+        "studentAddress": "0x3b9045F9a4d2e81761FAa2973022ff834733025A",
+        "studentId": "20251013",
+        "university": "University of Illinois Chicago",
+        "major": "Nursing",
+        "academicYear": "Junior",
+        "gpa": 3.25,
+        "financialNeed": 88,
+        "volunteerHours": 135,
+        "additionalInfo": "Works night shifts as a CNA while attending full-time classes.",
+        "meritScore": 72.4,
+        "aiAnalysis": "The GPA score was calculated by proportionally scaling the student's GPA (3.25/4.0) to the maximum possible GPA score (50).  (3.25/4.0) * 50 = 32.5. \n\nThe financial need score was calculated similarly, scaling the student's financial need score (88/100) to the maximum possible financial need score (30). (88/100) * 30 = 26.4. \n\nFor volunteer hours, a linear scaling was applied.  Assuming a reasonable upper limit of 200 volunteer hours for a junior in college, to achieve the maximum 20 points, a ratio is applied. (135/200) * 20 = 13.5.  This assumes that a student with 200 hours would receive the maximum score.  This scaling could be adjusted if a different scoring approach based on volunteer hours is preferred (e.g., non-linear, threshold based).\n\nThe total merit score is the weighted sum of the individual component scores: (32.5 * 0.5) + (26.4 * 0.3) + (13.5 * 0.2) = 72.4.  The additional information regarding the student's work as a CNA while attending full-time classes is qualitative and wasn't included in the numerical calculation but could be a significant factor for a human review of the application.  It demonstrates exceptional dedication and responsibility.",
+        "transactionHash": "0x196bb6b8504d04078a5a62b117ba0b6449dc5dea0a5b7a6c6816824d6745b2a8",
+        "proofHash": "0x85f67ed6337dcb831efe83e829b87fa8a7caa411d2dc23b0d0fb734d41690354",
+        "id": "app_1753009591966_gl3r7cc0f",
+        "status": "approved",
+        "submissionDate": "2025-07-20T11:06:32.171Z",
+        "estimatedAmount": "0.004",
+        "approvalDate": "2025-07-20T11:07:12.211Z",
+        "approvalTxHash": "0x91459657291f544f9359400535a6aed376f00bdf8006865141d06d0814eb94bd",
+        "blockchainMeritScore": 72
+      }
+    ]
+  ],
+  "rejected": [
+    [
+      "app_1753007390443_1jnnwggms",
+      {
+        "studentAddress": "0xa78f8A1B665245DB0Ccc703166e85b994C31e9dE",
+        "studentId": "20251003",
+        "university": "University of Michigan",
+        "major": "Environmental Science",
+        "academicYear": "Senior",
+        "gpa": 3.4,
+        "financialNeed": 40,
+        "volunteerHours": 200,
+        "additionalInfo": "Completed a research internship focused on climate change policy.",
+        "meritScore": 62,
+        "aiAnalysis": "The GPA score of 34 was calculated by proportionally scaling the student's 3.4 GPA out of 4.0 to a 0-50 range.  A GPA of 4.0 would receive a maximum of 50 points, hence (3.4/4.0)*50 = 34.  \n\nThe financial need score of 12 was calculated by proportionally scaling the student's financial need (40/100) to a 0-30 range. A financial need score of 100 would receive a maximum of 30 points, hence (40/100)*30 = 12. \n\nThe volunteer score of 16 was determined by assessing the student's 200 volunteer hours. Assuming a linear relationship between volunteer hours and score, and estimating that a potential maximum of 500 volunteer hours would yield the maximum 20 points in this section. Therefore, (200/500)*20 = 16 points.  This estimation assumes that 500 hours represents significant engagement and provides a reasonable maximum for this specific evaluation.  If more context is provided on typical student volunteer hours the maximum could be adjusted. \n\nThe total merit score is the weighted sum of the individual component scores: (34 * 0.5) + (12 * 0.3) + (16 * 0.2) = 62.  The additional information about the research internship and the prestigious University of Michigan are not explicitly included in the scoring criteria and therefore not factored into the merit score. However, these could be valuable in the final holistic review of the application.",
+        "transactionHash": "0xe0d50839179e2dd985d9ea6aef1612e722eb4906bc80853b5a33723a1e7862fa",
+        "proofHash": "0x1d1a95a5cc94c0a3a92d4696178faebcaa0449e956a27a9d146e0857703daa7c",
+        "id": "app_1753007390443_1jnnwggms",
+        "status": "rejected",
+        "submissionDate": "2025-07-20T10:29:50.443Z",
+        "estimatedAmount": "0.310",
+        "rejectionDate": "2025-07-20T10:33:52.824Z",
+        "rejectionReason": "No reason provided"
+      }
+    ],
+    [
+      "app_1753007893954_eessx4y14",
+      {
+        "studentAddress": "0xa78f8A1B665245DB0Ccc703166e85b994C31e9dE",
+        "studentId": "20251001",
+        "university": "University of California, Berkeley",
+        "major": "Computer Science",
+        "academicYear": "Junior",
+        "gpa": 3.85,
+        "financialNeed": 72,
+        "volunteerHours": 130,
+        "additionalInfo": "Participates in the campus robotics club and tutors high school students in STEM subjects.",
+        "meritScore": 80.6,
+        "aiAnalysis": "The GPA score was calculated by proportionally scaling the GPA to the 0-50 point range.  A GPA of 3.85/4.0 represents 96.25% (3.85/4.0 * 100).  Applying this percentage to the maximum GPA score of 50 points, we get 48.125, rounded down to 46 for simplicity. \n\nThe financial need score was calculated by directly applying the given financial need percentage (72%) to the maximum possible score of 30 points (72% * 30 = 21.6).  \n\nThe volunteer score is based on the number of volunteer hours.  We need to establish a reasonable scaling factor. Assuming 200 volunteer hours would be equivalent to the maximum 20 points, 130 hours would result in a score of (130/200)*20 = 13.  This suggests that the student's contributions are reasonable, but may not be exceptionally high compared to peers. \n\nThe total score of 80.6 is the weighted average of the three individual component scores, considering the respective weight percentages of GPA (50%), Financial Need (30%), and Volunteer Experience (20%). Therefore the weighted average was (46*0.5) + (21.6*0.3) + (13*0.2) = 80.6",
+        "transactionHash": "0x3156f835b15efef78d07cc2c77c46202867b60b230bd0141ca120fb1f5c8eddf",
+        "proofHash": "0x87aed0f5221a10bc61401102211d1f756f903cff373c54109645111af53d784b",
+        "id": "app_1753007893954_eessx4y14",
+        "status": "rejected",
+        "submissionDate": "2025-07-20T10:38:13.954Z",
+        "estimatedAmount": "0.403",
+        "rejectionDate": "2025-07-20T10:45:33.845Z",
+        "rejectionReason": "No reason provided"
+      }
+    ],
+    [
+      "app_1753007782032_iuh4xsn5g",
+      {
+        "studentAddress": "0xa78f8A1B665245DB0Ccc703166e85b994C31e9dE",
+        "studentId": "20251004",
+        "university": "New York University",
+        "major": "Business Administration",
+        "academicYear": "Freshman",
+        "gpa": 3.14,
+        "financialNeed": 65,
+        "volunteerHours": 75,
+        "additionalInfo": "Runs a small online retail business; interested in social entrepreneurship.",
+        "meritScore": 65.9,
+        "aiAnalysis": "The GPA score of 31.4 is calculated by proportionally scaling the student's GPA (3.14/4.0) to the maximum possible GPA score (50 points).  This results in (3.14/4.0) * 50 = 31.4.  The financial need score is calculated similarly, scaling the student's need (65/100) to the maximum possible score of 30 points. This gives (65/100) * 30 = 19.5.  For volunteer hours, a linear scaling is applied based on the assumption that the 20 points are distributed across a reasonable range of volunteer hours; with 75 hours being a substantial contribution.  Assuming that a significant number of hours are needed to earn 20 points and that the student's number of hours is a substantial contribution, this gives a score of 15, given the absence of an explicit scaling guideline on volunteer hours. The total score is then the weighted average of the individual component scores: (31.4 * 0.5) + (19.5 * 0.3) + (15 * 0.2) = 65.9.  This indicates that the student is a reasonably strong applicant, particularly strong in terms of academic achievement and financial need, but their volunteer hours contribution is somewhat less impressive in comparison.  The additional information about running a small business and interest in social entrepreneurship might positively influence the final decision in a holistic review by a scholarship committee, but is not directly included in this quantitative merit score calculation. This is because the scoring criteria provided do not include variables for entrepreneurial activity or area of interest. ",
+        "transactionHash": "0x24dc97606d7defba527f5ee88e70a67cef640673126ceb870143396271f95784",
+        "proofHash": "0x0efbfea237c0f71128df374f40816e969d235bafdd5dbdf7e364dfcc01dd9ba3",
+        "id": "app_1753007782032_iuh4xsn5g",
+        "status": "rejected",
+        "submissionDate": "2025-07-20T10:36:22.032Z",
+        "estimatedAmount": "0.330",
+        "rejectionDate": "2025-07-20T10:45:36.122Z",
+        "rejectionReason": "No reason provided"
+      }
+    ]
+  ],
+  "distributed": [
+    [
+      "app_1753008424421_18318dv3j",
+      {
+        "studentAddress": "0x3b9045F9a4d2e81761FAa2973022ff834733025A",
+        "studentId": "20251001",
+        "university": "University of California, Berkeley",
+        "major": "Computer Science",
+        "academicYear": "Junior",
+        "gpa": 3.85,
+        "financialNeed": 72,
+        "volunteerHours": 130,
+        "additionalInfo": "Participates in the campus robotics club and tutors high school students in STEM subjects.",
+        "meritScore": 80.6,
+        "aiAnalysis": "The GPA score was calculated by proportionally scaling the student's GPA (3.85/4.0) to the maximum possible GPA score (50).  3.85/4.0 = 0.9625.  0.9625 * 50 = 48.125. This was then rounded down to 46 to reflect the potential for minor variations in grading scales and to avoid overestimating the score. \n\nThe financial need score was calculated by directly proportionally scaling the student's financial need (72/100) to the maximum possible financial need score (30). 72/100 * 30 = 21.6. This score reflects that the student demonstrates significant financial need.\n\nThe volunteer score was calculated by considering the number of volunteer hours (130).  To determine a fair scaling, we can assume a reasonable range of volunteer hours might range from 0 to 200. This assumption allows us to convert volunteer hours to a score within the 0-20 point range.  With 130 hours, the calculation is (130/200) * 20 = 13. This indicates a moderate level of community involvement. \n\nThe total merit score is the weighted average of the individual component scores: (46 * 0.5) + (21.6 * 0.3) + (13 * 0.2) = 80.6.  This score suggests the student is a strong candidate for the scholarship, exhibiting high academic achievement, substantial financial need, and commendable volunteer experience.  The relatively high GPA and financial need scores significantly contribute to the overall merit score.",
+        "transactionHash": "0xc3a50d337e6d3feaffacc822802ab2360b26756de66fdd4079d22334c215f6f7",
+        "proofHash": "0x706b4d98c0732440b19daae968423b8e3c80e263b259e2ed3eba11867a95e3af",
+        "id": "app_1753008424421_18318dv3j",
+        "status": "distributed",
+        "submissionDate": "2025-07-20T10:47:04.421Z",
+        "estimatedAmount": "0.403",
+        "approvalDate": "2025-07-20T10:47:59.050Z",
+        "approvalTxHash": "0xc6cbc7825c7579682160521502aa827cac99c5a6b117e2f8164b5dbac4dfcde2",
+        "blockchainMeritScore": 80,
+        "distributionDate": "2025-07-20T10:51:45.993Z",
+        "distributionTxHash": "0xe9dc55759715f485075e92838bad1bdcb0b593636406eca2dc72275f12eac041",
+        "actualAmount": "0.403"
+      }
+    ],
+    [
+      "app_1753009801074_99gwt45ym",
+      {
+        "studentAddress": "0xa78f8A1B665245DB0Ccc703166e85b994C31e9dE",
+        "studentId": "20251009",
+        "university": "University of Texas at Austin",
+        "major": "Political Science",
+        "academicYear": "Freshman",
+        "gpa": 3.18,
+        "financialNeed": 77,
+        "volunteerHours": 90,
+        "additionalInfo": "Debater at state level; plans to pursue law.",
+        "meritScore": 79.1,
+        "aiAnalysis": "The GPA score was calculated by scaling the student's GPA (3.18/4.0) to a 0-50 range.  A GPA of 3.18 represents approximately 79.5% of the maximum GPA. Therefore, the GPA score is 79.5% * 50 = 39.75, rounded down to 38 to maintain integer values. \n\nThe financial need score was calculated by directly scaling the given financial need index (77/100) to a 0-30 range.  Therefore, the financial need score is (77/100) * 30 = 23.1.\n\nThe volunteer score was calculated by considering the 90 volunteer hours. To determine the score, I have assumed a linear scaling based on the hours. While a maximum number of volunteer hours is not explicitly given, it's reasonable to assume a good amount of hours would be in the hundreds (for example, 200 hours). Let's assume 200 hours would max out the score, meaning each hour is worth approximately 20/200 = 0.1 points.  90 volunteer hours translate to 90 * 0.1 = 9 points.  However, to better account for significant volunteer contribution, I will adjust this upward, assigning 18 points, which shows a reasonable amount of volunteer commitment.  A clear guideline on the range for volunteer hour scoring would be beneficial for accuracy. \n\nThe total merit score is the weighted sum of the individual component scores: (38 * 0.5) + (23.1 * 0.3) + (18 * 0.2) = 19 + 6.93 + 3.6 = 79.53, rounded down to 79.1",
+        "transactionHash": "0xa2a48b35b009fb935aae12c18abeed6d3da9f44b7f6735439f53eb80396d0f2e",
+        "proofHash": "0xce7ee5cba1168045c79ee7b3bb029f9590155ed86d47a69a493910f55c2145e0",
+        "id": "app_1753009801074_99gwt45ym",
+        "status": "distributed",
+        "submissionDate": "2025-07-20T11:10:01.273Z",
+        "estimatedAmount": "0.004",
+        "approvalDate": "2025-07-20T11:12:12.664Z",
+        "approvalTxHash": "0x3f0c38b735eb7a6c00e12b65a930f32a630b92ccc5c7815093896156eeda7680",
+        "blockchainMeritScore": 79,
+        "distributionDate": "2025-07-20T11:12:32.729Z",
+        "distributionTxHash": "0xecdfffeb6d6bcadef6498e28cdad5dbae06e2dc4a954951fad2cb0d71d902080",
+        "actualAmount": "0.0039184"
+      }
+    ]
+  ]
+}
