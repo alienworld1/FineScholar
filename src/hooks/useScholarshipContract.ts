@@ -1,10 +1,5 @@
 import { usePrivy } from '@privy-io/react-auth';
-import {
-  useAccount,
-  useReadContract,
-  useWriteContract,
-  useWaitForTransactionReceipt,
-} from 'wagmi';
+import { useAccount, useReadContract, useWriteContract } from 'wagmi';
 import { parseEther, formatEther } from 'viem';
 import { useState } from 'react';
 
@@ -97,7 +92,7 @@ export interface MeritScoreResult {
 export function useScholarshipContract() {
   const { authenticated } = usePrivy();
   const { address, isConnected } = useAccount();
-  const { writeContract } = useWriteContract();
+  const { writeContractAsync } = useWriteContract();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -200,27 +195,68 @@ export function useScholarshipContract() {
     return formatEther(totalFunds || BigInt(0));
   };
 
-  const depositFunds = async (amount: string): Promise<void> => {
+  const depositFunds = async (amount: string): Promise<string> => {
     if (!address) {
       setError('Wallet not connected');
-      return;
+      throw new Error('Wallet not connected');
     }
 
     try {
       setLoading(true);
       setError(null);
 
-      await writeContract({
+      // Write the transaction and get the hash
+      const hash = await writeContractAsync({
         address: SCHOLARSHIP_FUND_ADDRESS as `0x${string}`,
         abi: SCHOLARSHIP_FUND_ABI,
         functionName: 'depositFunds',
         value: parseEther(amount),
       });
 
-      // Refetch total funds after deposit
-      setTimeout(() => refetchTotalFunds(), 2000);
+      // Wait for transaction confirmation with a simple polling approach
+      let confirmed = false;
+      let attempts = 0;
+      const maxAttempts = 60; // 60 seconds timeout
+
+      while (!confirmed && attempts < maxAttempts) {
+        try {
+          const response = await fetch(`https://evm-rpc-testnet.sei-apis.com`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              jsonrpc: '2.0',
+              method: 'eth_getTransactionReceipt',
+              params: [hash],
+              id: 1,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.result && result.result.status === '0x1') {
+            confirmed = true;
+            // Refetch total funds after successful confirmation
+            await refetchTotalFunds();
+            break;
+          }
+        } catch (pollError) {
+          console.warn('Error checking transaction status:', pollError);
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        attempts++;
+      }
+
+      if (!confirmed) {
+        throw new Error('Transaction confirmation timeout');
+      }
+
+      return hash;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to deposit funds');
+      throw err;
     } finally {
       setLoading(false);
     }

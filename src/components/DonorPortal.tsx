@@ -132,16 +132,15 @@ export default function DonorPortal() {
       setShowError(false);
       setErrorMessage('');
 
-      // Use the actual blockchain deposit function instead of MCP service
-      await depositFunds(donationAmount);
+      // Use the actual blockchain deposit function - this now waits for confirmation
+      const transactionHash = await depositFunds(donationAmount);
 
+      // Only show success after transaction is confirmed
       setShowSuccess(true);
       setDonationAmount('');
 
-      // Refresh stats after successful donation
-      setTimeout(() => {
-        loadDonorStats();
-      }, 2000); // Wait for blockchain confirmation
+      // Refresh stats immediately after successful transaction
+      await loadDonorStats();
 
       setTimeout(() => setShowSuccess(false), 3000);
     } catch (error) {
@@ -254,7 +253,7 @@ export default function DonorPortal() {
               <div className="flex items-center">
                 <Sparkles className="w-6 h-6 mr-3" />
                 <span className="font-bold">
-                  Donation successful! Thank you! ✨
+                  Donation confirmed! Thank you for helping students! ✨
                 </span>
               </div>
             </div>
@@ -363,7 +362,7 @@ export default function DonorPortal() {
                       {contractLoading ? (
                         <>
                           <RefreshCw className="w-6 h-6 mr-3 animate-spin" />
-                          <span>Processing Transaction...</span>
+                          <span>Confirming Transaction...</span>
                         </>
                       ) : (
                         <>

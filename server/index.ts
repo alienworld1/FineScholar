@@ -6,6 +6,9 @@ import { fileURLToPath } from 'url';
 import { processApplicationRoute } from './routes/processApplication';
 import { healthRoute } from './routes/health';
 import { donorStatsRoute } from './routes/donorStats';
+import { mcpCalculateMeritRoute } from './routes/mcpCalculateMeritRoute';
+import { mcpProcessStudentRoute } from './routes/mcpProcessStudentRoute';
+import { mcpRecentEventsRoute } from './routes/mcpRecentEventsRoute';
 
 // Get __dirname equivalent for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -49,6 +52,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api', healthRoute);
 app.use('/api', processApplicationRoute);
 app.use('/api', donorStatsRoute);
+app.use('/api', mcpCalculateMeritRoute);
+app.use('/api', mcpProcessStudentRoute);
+app.use('/api', mcpRecentEventsRoute);
 
 // Error handling middleware
 app.use(

@@ -48,6 +48,7 @@ export default function StudentPortal() {
     useState<ApplicationStatus>('idle');
   const [meritPreview, setMeritPreview] = useState<any>(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleInputChange = (
     field: keyof StudentData,
@@ -77,6 +78,8 @@ export default function StudentPortal() {
     if (!isFormValid() || !user?.wallet?.address) return;
 
     setApplicationStatus('processing');
+    setErrorMessage(''); // Clear any previous errors
+
     try {
       const studentData: StudentData = {
         ...formData,
@@ -89,10 +92,14 @@ export default function StudentPortal() {
         setApplicationStatus('success');
       } else {
         setApplicationStatus('error');
+        setErrorMessage(result.error || 'Application processing failed');
       }
     } catch (error) {
       console.error('Application failed:', error);
       setApplicationStatus('error');
+      setErrorMessage(
+        error instanceof Error ? error.message : 'Application failed',
+      );
     }
   };
 
@@ -594,9 +601,12 @@ export default function StudentPortal() {
                   <h4 className="text-xl font-black text-red-900 mb-2">
                     Application Failed
                   </h4>
-                  <p className="text-red-700">
-                    There was an error processing your application. Please try
-                    again.
+                  <p className="text-red-700 mb-2">
+                    {errorMessage ||
+                      'There was an error processing your application.'}
+                  </p>
+                  <p className="text-red-600 text-sm">
+                    Please check your details and try again.
                   </p>
                 </div>
               )}
