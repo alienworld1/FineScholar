@@ -2,7 +2,7 @@
 
 ## AI-Driven Scholarship Platform on Sei Blockchain
 
-FineScholar is a decentralized application (dApp) that revolutionizes scholarship allocation by combining artificial intelligence with blockchain transparency. Built for the Sei MCP Kit hackathon, it leverages the Sei blockchain's lightning-fast transaction speeds (<400ms) to provide fair, transparent, and AI-calculated merit-based scholarships to university students worldwide.
+FineScholar is a decentralized application (dApp) that revolutionizes scholarship allocation by combining artificial intelligence with blockchain transparency. It leverages the Sei blockchain's lightning-fast transaction speeds (<400ms) to provide fair, transparent, and AI-calculated merit-based scholarships to university students worldwide.
 
 ## 🌟 Key Features
 
