@@ -16,6 +16,7 @@ import {
   TrendingUp,
   CheckCircle,
   AlertCircle,
+  Eye,
 } from 'lucide-react';
 import FloatingElements from './FloatingElements';
 
@@ -49,6 +50,7 @@ export default function StudentPortal() {
   const [meritPreview, setMeritPreview] = useState<any>(null);
   const [showPreview, setShowPreview] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [transactionHash, setTransactionHash] = useState<string>('');
 
   const handleInputChange = (
     field: keyof StudentData,
@@ -90,6 +92,7 @@ export default function StudentPortal() {
 
       if (result.success) {
         setApplicationStatus('success');
+        setTransactionHash(result.transactionHash || '');
       } else {
         setApplicationStatus('error');
         setErrorMessage(result.error || 'Application processing failed');
@@ -588,10 +591,21 @@ export default function StudentPortal() {
                   <h4 className="text-xl font-black text-green-900 mb-2">
                     Application Submitted! 🎉
                   </h4>
-                  <p className="text-green-700">
+                  <p className="text-green-700 mb-3">
                     Your application has been processed and submitted to the
                     blockchain.
                   </p>
+                  {transactionHash && (
+                    <a
+                      href={`https://seitrace.com/tx/${transactionHash}?chain=atlantic-2`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-bold text-sm"
+                    >
+                      <Eye className="w-4 h-4 mr-2" />
+                      View Transaction
+                    </a>
+                  )}
                 </div>
               )}
 

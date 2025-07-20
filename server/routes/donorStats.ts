@@ -70,6 +70,7 @@ const SCHOLARSHIP_FUND_ABI = [
 // Get donor statistics from blockchain
 router.get('/donor-stats', async (req, res) => {
   try {
+    const { donor } = req.query;
     const provider = new ethers.JsonRpcProvider(SEI_RPC_URL);
     const contract = new ethers.Contract(
       SCHOLARSHIP_FUND_ADDRESS,
@@ -81,7 +82,10 @@ router.get('/donor-stats', async (req, res) => {
     const currentBlock = await provider.getBlockNumber();
     const fromBlock = Math.max(0, currentBlock - 1000);
 
-    const donationFilter = contract.filters.FundsDeposited();
+    // Create filters - if donor is specified, filter by donor address
+    const donationFilter = donor
+      ? contract.filters.FundsDeposited(donor)
+      : contract.filters.FundsDeposited();
     const scholarshipFilter = contract.filters.ScholarshipAwarded();
 
     const [donationEvents, scholarshipEvents] = await Promise.all([
@@ -163,6 +167,8 @@ router.get('/donor-stats', async (req, res) => {
         averageScore,
         recentDonations,
         recentScholarships,
+        isDonorSpecific: !!donor, // Indicate if these are donor-specific stats
+        donorAddress: donor || null,
       },
     });
   } catch (error) {

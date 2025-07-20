@@ -54,17 +54,18 @@ export default function DonorPortal() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [donationTxHash, setDonationTxHash] = useState('');
 
   // Load initial data
   useEffect(() => {
-    if (authenticated && isConnected) {
+    if (authenticated && isConnected && user?.wallet?.address) {
       loadDonorStats();
     }
-  }, [authenticated, isConnected]);
+  }, [authenticated, isConnected, user?.wallet?.address]);
 
   // Set up event monitoring
   useEffect(() => {
-    if (authenticated && isConnected) {
+    if (authenticated && isConnected && user?.wallet?.address) {
       const stopMonitoring = startEventMonitoring(event => {
         if (event.type === 'Payout') {
           loadDonorStats(); // Refresh stats when scholarships are distributed
@@ -72,13 +73,18 @@ export default function DonorPortal() {
       });
       return stopMonitoring;
     }
-  }, [authenticated, isConnected, startEventMonitoring]);
+  }, [authenticated, isConnected, user?.wallet?.address, startEventMonitoring]);
 
   const loadDonorStats = async () => {
     setIsRefreshing(true);
     try {
-      // Fetch real blockchain data from our API
-      const response = await fetch('/api/donor-stats');
+      // Get the current user's wallet address
+      const walletAddress = user?.wallet?.address;
+
+      // Fetch donor-specific blockchain data from our API
+      const response = await fetch(
+        `/api/donor-stats${walletAddress ? `?donor=${walletAddress}` : ''}`,
+      );
       const data = await response.json();
 
       if (data.success) {
@@ -137,6 +143,7 @@ export default function DonorPortal() {
 
       // Only show success after transaction is confirmed
       setShowSuccess(true);
+      setDonationTxHash(transactionHash);
       setDonationAmount('');
 
       // Refresh stats immediately after successful transaction
@@ -250,11 +257,24 @@ export default function DonorPortal() {
           {/* Success notification */}
           {showSuccess && (
             <div className="fixed top-6 right-6 z-50 bg-gradient-to-r from-green-400 to-emerald-500 text-white px-6 py-4 rounded-2xl border-3 border-green-600 shadow-2xl transform animate-bounce">
-              <div className="flex items-center">
-                <Sparkles className="w-6 h-6 mr-3" />
-                <span className="font-bold">
-                  Donation confirmed! Thank you for helping students! ✨
-                </span>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Sparkles className="w-6 h-6 mr-3" />
+                  <span className="font-bold">
+                    Donation confirmed! Thank you for helping students! ✨
+                  </span>
+                </div>
+                {donationTxHash && (
+                  <a
+                    href={`https://seitrace.com/tx/${donationTxHash}?chain=pacific-1`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ml-4 px-3 py-1 bg-green-600 hover:bg-green-700 rounded-lg transition-colors text-sm font-bold flex items-center"
+                  >
+                    <Eye className="w-4 h-4 mr-1" />
+                    View
+                  </a>
+                )}
               </div>
             </div>
           )}
