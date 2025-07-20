@@ -45,7 +45,7 @@ FineScholar is a decentralized application (dApp) that revolutionizes scholarshi
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/alienworld1/FineScholar.git
 cd FineScholar
 
 # Install dependencies
