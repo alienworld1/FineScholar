@@ -6,6 +6,7 @@ import {
   useReadContract,
   useWaitForTransactionReceipt,
 } from 'wagmi';
+import api from '../utils/api';
 
 const ENROLLMENT_NFT_ABI = [
   // Read functions
@@ -121,16 +122,10 @@ export function useEnrollmentNFT() {
     setError(null);
 
     try {
-      const response = await fetch('/api/enrollment/request-nft', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          studentAddress: user.wallet.address,
-          university,
-          studentId,
-        }),
+      const response = await api.post('/enrollment/request-nft', {
+        studentAddress: user.wallet.address,
+        university,
+        studentId,
       });
 
       const result = await response.json();
@@ -174,17 +169,11 @@ export function useEnrollmentNFT() {
       const hashHex =
         '0x' + hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-      const response = await fetch('/api/enrollment/verify-document', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          studentAddress: user.wallet.address,
-          documentHash: hashHex,
-          fileName: file.name,
-          fileSize: file.size,
-        }),
+      const response = await api.post('/enrollment/verify-document', {
+        studentAddress: user.wallet.address,
+        documentHash: hashHex,
+        fileName: file.name,
+        fileSize: file.size,
       });
 
       const result = await response.json();
@@ -209,7 +198,7 @@ export function useEnrollmentNFT() {
     if (!tokenId) return null;
 
     try {
-      const response = await fetch(`/api/enrollment/token-data/${tokenId}`);
+      const response = await api.get(`/enrollment/token-data/${tokenId}`);
       const result = await response.json();
 
       if (!result.success) {

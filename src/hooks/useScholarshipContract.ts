@@ -2,6 +2,7 @@ import { usePrivy } from '@privy-io/react-auth';
 import { useAccount, useReadContract, useWriteContract } from 'wagmi';
 import { parseEther, formatEther } from 'viem';
 import { useState } from 'react';
+import api from '../utils/api';
 
 // Import contract ABIs and addresses
 const SCHOLARSHIP_FUND_ADDRESS =
@@ -162,15 +163,11 @@ export function useScholarshipContract() {
       setError(null);
 
       // Call our backend API to process the application with AI
-      const response = await fetch('/api/process-application', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      const response = await api.post('/process-application', {
+        studentData: {
           ...studentData,
           address,
-        }),
+        },
       });
 
       if (!response.ok) {

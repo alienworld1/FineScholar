@@ -16,6 +16,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import FloatingElements from './FloatingElements';
+import api from '../utils/api';
 
 interface DonationStats {
   totalDonated: string;
@@ -95,8 +96,8 @@ export default function DonorPortal() {
       const walletAddress = user?.wallet?.address;
 
       // Fetch donor-specific blockchain data from our API
-      const response = await fetch(
-        `/api/donor-stats${walletAddress ? `?donor=${walletAddress}` : ''}`,
+      const response = await api.get(
+        `/donor-stats${walletAddress ? `?donor=${walletAddress}` : ''}`,
       );
       const data = await response.json();
 
@@ -146,7 +147,7 @@ export default function DonorPortal() {
 
   const loadDistributedScholarships = async () => {
     try {
-      const response = await fetch('/api/scholarships/distributions');
+      const response = await api.get('/scholarships/distributions');
       const data = await response.json();
 
       if (data.success) {

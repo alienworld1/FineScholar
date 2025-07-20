@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
+import api from '../utils/api';
 
 // Types for frontend MCP integration
 export interface StudentData {
@@ -68,7 +69,6 @@ export function useMCPService() {
 
   /**
    * Calculate merit score for a student using AI
-   * This would typically call a backend API that interfaces with the MCP service
    */
   const calculateMeritScore = async (
     studentData: StudentData,
@@ -76,15 +76,7 @@ export function useMCPService() {
     setState(prev => ({ ...prev, isProcessing: true, error: undefined }));
 
     try {
-      // In a real implementation, this would call your backend API
-      // For now, we'll simulate the MCP calculation
-      const response = await fetch('/api/mcp/calculate-merit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(studentData),
-      });
+      const response = await api.post('/mcp/calculate-merit', studentData);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -113,13 +105,7 @@ export function useMCPService() {
     setState(prev => ({ ...prev, isProcessing: true, error: undefined }));
 
     try {
-      const response = await fetch('/api/mcp/process-student', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(studentData),
-      });
+      const response = await api.post('/mcp/process-student', studentData);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -156,7 +142,7 @@ export function useMCPService() {
    */
   const getNetworkInfo = async () => {
     try {
-      const response = await fetch('/api/mcp/network-info');
+      const response = await api.get('/mcp/network-info');
       if (response.ok) {
         const networkInfo = await response.json();
         setState(prev => ({
@@ -193,12 +179,9 @@ export function useMCPService() {
     setState(prev => ({ ...prev, isProcessing: true, error: undefined }));
 
     try {
-      const response = await fetch('/api/mcp/fund-pool', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ amount, from: address }),
+      const response = await api.post('/mcp/fund-pool', {
+        amount,
+        from: address,
       });
 
       if (!response.ok) {
@@ -238,7 +221,7 @@ export function useMCPService() {
     // For now, we'll simulate periodic updates
     const interval = setInterval(async () => {
       try {
-        const response = await fetch('/api/mcp/recent-events');
+        const response = await api.get('/mcp/recent-events');
         if (response.ok) {
           const events = await response.json();
           events.forEach(callback);

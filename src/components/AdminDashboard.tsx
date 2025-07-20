@@ -17,6 +17,7 @@ import {
   AlertCircle,
 } from 'lucide-react';
 import FloatingElements from './FloatingElements';
+import api from '../utils/api';
 
 interface PendingApplication {
   id: string;
@@ -63,7 +64,7 @@ export default function AdminDashboard() {
   const loadApplications = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/admin/applications');
+      const response = await api.get('/admin/applications');
       const data = await response.json();
 
       if (data.success) {
@@ -81,12 +82,8 @@ export default function AdminDashboard() {
     setProcessingIds(prev => new Set([...prev, applicationId]));
 
     try {
-      const response = await fetch('/api/admin/approve-scholarship', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ applicationId }),
+      const response = await api.post('/admin/approve-scholarship', {
+        applicationId,
       });
 
       const result = await response.json();
@@ -124,12 +121,8 @@ export default function AdminDashboard() {
     setProcessingIds(prev => new Set([...prev, applicationId]));
 
     try {
-      const response = await fetch('/api/admin/reject-scholarship', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ applicationId }),
+      const response = await api.post('/admin/reject-scholarship', {
+        applicationId,
       });
 
       const result = await response.json();
@@ -158,12 +151,8 @@ export default function AdminDashboard() {
     setProcessingIds(prev => new Set([...prev, applicationId]));
 
     try {
-      const response = await fetch('/api/admin/distribute-scholarship', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ applicationId }),
+      const response = await api.post('/admin/distribute-scholarship', {
+        applicationId,
       });
 
       const result = await response.json();
