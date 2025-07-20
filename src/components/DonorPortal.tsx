@@ -50,6 +50,19 @@ export default function DonorPortal() {
     averageScore: 0,
     recentTransactions: [],
   });
+  const [distributedScholarships, setDistributedScholarships] = useState<
+    Array<{
+      id: string;
+      university: string;
+      major: string;
+      meritScore: number;
+      amount: string;
+      distributionDate: string;
+      transactionHash: string;
+      studentAddress: string;
+    }>
+  >([]);
+  const [showDistributions, setShowDistributions] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -125,6 +138,22 @@ export default function DonorPortal() {
       }
     } finally {
       setIsRefreshing(false);
+    }
+
+    // Also load distributed scholarships for transparency
+    loadDistributedScholarships();
+  };
+
+  const loadDistributedScholarships = async () => {
+    try {
+      const response = await fetch('/api/scholarships/distributions');
+      const data = await response.json();
+
+      if (data.success) {
+        setDistributedScholarships(data.data.distributions || []);
+      }
+    } catch (error) {
+      console.error('Failed to load distributed scholarships:', error);
     }
   };
 
@@ -243,6 +272,14 @@ export default function DonorPortal() {
                 </button>
 
                 <button
+                  onClick={() => setShowDistributions(!showDistributions)}
+                  className="px-4 py-2 bg-gradient-to-br from-blue-400 to-purple-400 text-white rounded-xl font-bold border-3 border-blue-600 hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                >
+                  <Eye className="w-4 h-4 mr-2 inline" />
+                  View Funded Students
+                </button>
+
+                <button
                   onClick={logout}
                   className="px-4 py-2 bg-gradient-to-br from-red-400 to-orange-400 text-white rounded-xl font-bold border-3 border-red-600 hover:shadow-lg transform hover:scale-105 transition-all duration-200"
                 >
@@ -266,7 +303,7 @@ export default function DonorPortal() {
                 </div>
                 {donationTxHash && (
                   <a
-                    href={`https://seitrace.com/tx/${donationTxHash}?chain=pacific-1`}
+                    href={`https://seitrace.com/tx/${donationTxHash}?chain=atlantic-2`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="ml-4 px-3 py-1 bg-green-600 hover:bg-green-700 rounded-lg transition-colors text-sm font-bold flex items-center"
@@ -503,6 +540,106 @@ export default function DonorPortal() {
             </div>
           </div>
         </div>
+
+        {/* Distributed Scholarships Section */}
+        {showDistributions && (
+          <div className="mt-8 max-w-6xl mx-auto px-6">
+            <div className="bg-white/90 backdrop-blur-md rounded-2xl border-4 border-purple-300 shadow-2xl overflow-hidden">
+              <div className="bg-gradient-to-r from-purple-400 via-violet-500 to-blue-500 p-6 border-b-4 border-purple-600">
+                <h3 className="text-2xl font-black text-white tracking-wide flex items-center">
+                  <Users className="w-6 h-6 mr-3" />
+                  Funded Students - Transparent Impact
+                </h3>
+                <p className="text-purple-100 mt-2">
+                  See how your donations are helping students achieve their
+                  dreams
+                </p>
+              </div>
+
+              <div className="p-6 space-y-4">
+                {distributedScholarships.length === 0 ? (
+                  <div className="text-center py-8">
+                    <Users className="w-16 h-16 text-purple-300 mx-auto mb-4" />
+                    <p className="text-purple-600 font-semibold">
+                      No scholarships distributed yet
+                    </p>
+                    <p className="text-purple-500 text-sm mt-2">
+                      Check back soon to see the impact of donations!
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {distributedScholarships.map((scholarship, index) => (
+                      <div
+                        key={scholarship.id}
+                        className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl border-3 border-purple-300 p-4 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                      >
+                        <div className="flex justify-between items-start mb-3">
+                          <div className="flex-1">
+                            <h4 className="font-bold text-purple-900 truncate">
+                              {scholarship.university}
+                            </h4>
+                            <p className="text-purple-700 text-sm font-medium">
+                              {scholarship.major}
+                            </p>
+                          </div>
+                          <div className="bg-purple-200 rounded-full px-3 py-1 ml-2">
+                            <span className="text-xs font-bold text-purple-800">
+                              Score: {scholarship.meritScore}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-sm">
+                            <span className="text-purple-600 font-medium">
+                              Amount:
+                            </span>
+                            <span className="font-bold text-purple-900">
+                              {scholarship.amount} SEI
+                            </span>
+                          </div>
+
+                          <div className="flex justify-between text-sm">
+                            <span className="text-purple-600 font-medium">
+                              Student:
+                            </span>
+                            <span className="font-mono text-purple-800 text-xs">
+                              {scholarship.studentAddress}
+                            </span>
+                          </div>
+
+                          <div className="flex justify-between text-sm">
+                            <span className="text-purple-600 font-medium">
+                              Date:
+                            </span>
+                            <span className="text-purple-800 font-medium">
+                              {new Date(
+                                scholarship.distributionDate,
+                              ).toLocaleDateString()}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 pt-3 border-t border-purple-200">
+                          <a
+                            href={`https://seitrace.com/tx/${scholarship.transactionHash}?chain=atlantic-2`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center w-full px-3 py-2 bg-gradient-to-r from-purple-400 to-violet-400 text-white rounded-lg font-bold text-sm hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                          >
+                            <ArrowRight className="w-4 h-4 mr-2" />
+                            View Transaction
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

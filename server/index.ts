@@ -10,6 +10,7 @@ import { mcpCalculateMeritRoute } from './routes/mcpCalculateMeritRoute';
 import { mcpProcessStudentRoute } from './routes/mcpProcessStudentRoute';
 import { mcpRecentEventsRoute } from './routes/mcpRecentEventsRoute';
 import { enrollmentRoute } from './routes/enrollment';
+import { adminRoute } from './routes/admin';
 
 // Get __dirname equivalent for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -57,6 +58,7 @@ app.use('/api', mcpCalculateMeritRoute);
 app.use('/api', mcpProcessStudentRoute);
 app.use('/api', mcpRecentEventsRoute);
 app.use('/api', enrollmentRoute);
+app.use('/api', adminRoute);
 
 // Error handling middleware
 app.use(
