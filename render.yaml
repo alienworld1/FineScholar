@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: finescholar-backend
+    runtime: node
+    plan: free
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: SEI_RPC_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: ADMIN_PRIVATE_KEY
+        sync: false
+      - key: PRIVATE_KEY
+        sync: false
+      - key: VITE_SCHOLARSHIP_FUND_ADDRESS
+        sync: false
+      - key: VITE_ENROLLMENT_NFT_ADDRESS
+        sync: false
+      - key: FRONTEND_URL
+        value: https://finescholar.vercel.app
+    disk:
+      name: finescholar-data
+      mountPath: /opt/render/project/server/data
+      sizeGB: 1
