@@ -24,7 +24,7 @@ services:
       - key: VITE_ENROLLMENT_NFT_ADDRESS
         sync: false
       - key: FRONTEND_URL
-        value: https://finescholar.vercel.app
+        value: https://fine-scholar.vercel.app/
     disk:
       name: finescholar-data
       mountPath: /opt/render/project/server/data
